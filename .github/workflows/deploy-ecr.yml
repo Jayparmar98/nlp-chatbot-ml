@@ -35,7 +35,7 @@ jobs:
       run: docker images
 
     - name: Tag Docker image
-      run: docker tag nlp-chatbot-ml ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
+      run: docker tag nlp-chatbot-ml:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
 
     - name: Push Docker image
       run: docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
