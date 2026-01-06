@@ -28,14 +28,11 @@ jobs:
     - name: Login to Amazon ECR
       uses: aws-actions/amazon-ecr-login@v2
 
-    - name: Debug env
-      run: |
-        echo "AWS_ACCOUNT_ID=${AWS_ACCOUNT_ID}"
-        echo "AWS_REGION=${AWS_REGION}"
-        echo "ECR_REPOSITORY=${ECR_REPOSITORY}"
-
     - name: Build Docker image
       run: docker build -t nlp-chatbot-ml:latest .
+
+    - name: Verify local images (DEBUG)
+      run: docker images
 
     - name: Tag Docker image
       run: docker tag nlp-chatbot-ml:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
