@@ -28,8 +28,17 @@ jobs:
     - name: Login to Amazon ECR
       uses: aws-actions/amazon-ecr-login@v2
 
+    - name: Debug env vars
+      run: |
+        echo "ECR_REPOSITORY=${ECR_REPOSITORY}"
+        echo "AWS_REGION=${AWS_REGION}"
+        echo "AWS_ACCOUNT_ID=${AWS_ACCOUNT_ID}"
+
     - name: Build Docker image
-      run: docker build -t ${ECR_REPOSITORY}:latest .
+      run: |
+        docker build \
+          -t ${ECR_REPOSITORY}:latest \
+          .
 
     - name: Tag Docker image
       run: |
@@ -38,4 +47,5 @@ jobs:
 
     - name: Push Docker image to ECR
       run: |
-        docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
+        docker push \
+        ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
