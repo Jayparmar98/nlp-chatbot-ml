@@ -28,22 +28,18 @@ jobs:
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
-      # 🔹 BUILD with a FIXED local name (no variables)
+      # ✅ BUILD with FIXED name (NO VARIABLES)
       - name: Build Docker image
         run: docker build -t nlp-chatbot-ml:latest .
 
-      # 🔹 PROVE the image exists
-      - name: List Docker images
+      # ✅ CONFIRM image exists
+      - name: Show Docker images
         run: docker images
 
-      # 🔹 TAG using the FIXED source image name
+      # ✅ TAG using FIXED source image name
       - name: Tag Docker image
-        run: |
-          docker tag nlp-chatbot-ml:latest \
-          ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
+        run: docker tag nlp-chatbot-ml:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
 
-      # 🔹 PUSH to ECR
+      # ✅ PUSH to ECR
       - name: Push Docker image
-        run: |
-          docker push \
-          ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
+        run: docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
