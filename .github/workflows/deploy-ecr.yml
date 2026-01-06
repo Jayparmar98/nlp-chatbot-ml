@@ -7,8 +7,8 @@ on:
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
-  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
 
 jobs:
   build-and-push:
@@ -28,24 +28,17 @@ jobs:
     - name: Login to Amazon ECR
       uses: aws-actions/amazon-ecr-login@v2
 
-    - name: Debug env vars
+    - name: Debug env
       run: |
-        echo "ECR_REPOSITORY=${ECR_REPOSITORY}"
-        echo "AWS_REGION=${AWS_REGION}"
         echo "AWS_ACCOUNT_ID=${AWS_ACCOUNT_ID}"
+        echo "AWS_REGION=${AWS_REGION}"
+        echo "ECR_REPOSITORY=${ECR_REPOSITORY}"
 
     - name: Build Docker image
-      run: |
-        docker build \
-          -t ${ECR_REPOSITORY}:latest \
-          .
+      run: docker build -t nlp-chatbot-ml:latest .
 
     - name: Tag Docker image
-      run: |
-        docker tag ${ECR_REPOSITORY}:latest \
-        ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
+      run: docker tag nlp-chatbot-ml:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
 
-    - name: Push Docker image to ECR
-      run: |
-        docker push \
-        ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
+    - name: Push Docker image
+      run: docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
